@@ -9,6 +9,18 @@
 /* global __fbBatchedBridge, self, importScripts, postMessage, onmessage: true */
 /* eslint no-unused-vars: 0 */
 'use strict';
+var got = require('got');
+global.Promise = require('bluebird')
+var self = global;
+
+function importScripts(url) {
+  console.log('\n=== URL ===\n', url);
+  return got(url).then(function(response) {
+    eval(response.body);
+  });
+}
+
+function DebuggerWorker() {}
 
 var messageHandlers = {
   'executeApplicationScript': function(message, sendReply) {
@@ -16,21 +28,21 @@ var messageHandlers = {
       self[key] = JSON.parse(message.inject[key]);
     }
     let error;
-    try {
-      importScripts(message.url);
-    } catch (err) {
-      console.error('ERROR:', err);
+    importScripts(message.url).catch(function(err) {
+      console.log('!=== ERROR ===\n', err);
       error = JSON.stringify(err);
-    }
-    sendReply(null /* result */, error);
+    }).finally(function() {
+      sendReply(null /* result */ , error);
+    });
   }
 };
 
-onmessage = function(message) {
-  var object = message.data;
+DebuggerWorker.prototype.postMessage = function(message) {
+  var object = message;
+  var worker = this;
 
   var sendReply = function(result, error) {
-    postMessage({replyID: object.id, result: result, error: error});
+    worker.onmessage({replyID: object.id, result: result, error: error});
   };
 
   var handler = messageHandlers[object.method];
@@ -49,3 +61,9 @@ onmessage = function(message) {
     }
   }
 };
+
+DebuggerWorker.prototype.terminate = function() {
+  console.log('\n\nDone!\n\n');
+};
+
+module.exports = DebuggerWorker;

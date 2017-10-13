@@ -9,7 +9,8 @@
   "author": "dq",
   "license": "ISC",
   "dependencies": {
-    "webworker-threads": "0.7.13",
+    "bluebird": "3.5.1",
+    "got": "7.1.0",
     "ws": "3.2.0"
   }
 }

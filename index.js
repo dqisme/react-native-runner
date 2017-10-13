@@ -1,5 +1,5 @@
 var WebSocket = require('ws');
-var Worker = require('webworker-threads').Worker;
+var Worker = require('./debuggerWorker');
 var host = 'localhost:8081';
 var INITIAL_MESSAGE = 'Starting ...';
 
@@ -12,13 +12,10 @@ function connectToDebuggerProxy() {
     // This worker will run the application javascript code,
     // making sure that it's run in an environment without a global
     // document, to make it consistent with the JSC executor environment.
-    worker = new Worker('debuggerWorker.js');
+    worker = new Worker();
     worker.onmessage = function(message) {
       console.log('=== Debugger --> Native ===\n', message);
-      if (message.error) {
-        console.error(error);
-      }
-      ws.send(JSON.stringify(message.data));
+      ws.send(JSON.stringify(message));
     };
   }
 
