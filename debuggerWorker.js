@@ -12,11 +12,15 @@
 var got = require('got');
 global.Promise = require('bluebird')
 var self = global;
+var vm = require('vm');
 
 function importScripts(url) {
   console.log('\n=== URL ===\n', url);
   return got(url).then(function(response) {
-    eval(response.body);
+    vm.runInThisContext(response.body, {
+      filename: 'app.vm',
+      displayErrors: true,
+    });
   });
 }
 
