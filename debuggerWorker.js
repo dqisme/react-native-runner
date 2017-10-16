@@ -11,13 +11,13 @@
 'use strict';
 var got = require('got');
 global.Promise = require('bluebird')
-var self = global;
+var self = { console: global.console };
 var vm = require('vm');
 
 function importScripts(url) {
   console.log('\n=== URL ===\n', url);
   return got(url).then(function(response) {
-    vm.runInThisContext(response.body, {
+    vm.runInNewContext(response.body, self, {
       filename: 'app.vm',
       displayErrors: true,
     });
@@ -57,8 +57,8 @@ DebuggerWorker.prototype.postMessage = function(message) {
     // Other methods get called on the bridge
     var returnValue = [[], [], [], 0];
     try {
-      if (typeof __fbBatchedBridge === 'object') {
-        returnValue = __fbBatchedBridge[object.method].apply(null, object.arguments);
+      if (typeof self['__fbBatchedBridge'] === 'object') {
+        returnValue = self['__fbBatchedBridge'][object.method].apply(null, object.arguments);
       }
     } finally {
       sendReply(JSON.stringify(returnValue));
