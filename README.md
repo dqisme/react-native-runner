@@ -33,3 +33,8 @@ Your bundled scripts is named as `app.vm` in the source tab of Chrome Inspector.
 1. [WebWorker in react-native-debugger](https://github.com/jhen0409/react-native-debugger/blob/c696a1193f5696b12404018cc6a564cce9ab4cff/app/middlewares/debuggerAPI.js#L47)
 1. [vm module in Node.js 6.x](https://nodejs.org/dist/latest-v6.x/docs/api/vm.html)
 1. [Deep Diving React Native Debugging](https://medium.com/@shaheenghiassy/deep-diving-react-native-debugging-ea406ed3a691)
+1. [facebook/android-jsc @ GitHub](https://github.com/facebook/android-jsc)
+1. [WebKit Build Archives](https://webkit.org/build-archives/)
+1. [Safari version history](https://www.wikiwand.com/en/Safari_version_history)
+1. [Browser Market Share Worldwide](http://gs.statcounter.com/)
+1. [The Great Browser JavaScript Showdown](https://blog.codinghorror.com/the-great-browser-javascript-showdown/)
